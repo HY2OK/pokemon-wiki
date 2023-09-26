@@ -1,13 +1,15 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import LazyImage from './LazyImage';
 
-const PokeCard = ({ url, name }) => {
+// eslint-disable-next-line react/prop-types
+function PokeCard({ url, name }) {
     const [pokemon, setPokemon] = useState(0);
 
     useEffect(() => {
         fetchPokeDetailData();
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [url, name]);
 
     async function fetchPokeDetailData() {
         try {
@@ -56,6 +58,6 @@ const PokeCard = ({ url, name }) => {
             )}
         </>
     );
-};
+}
 
 export default PokeCard;

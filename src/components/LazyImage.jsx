@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
+// eslint-disable-next-line react/prop-types
 const LazyImage = ({ alt, url }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [opacity, setOpacity] = useState('opacity-0');
