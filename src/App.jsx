@@ -6,18 +6,21 @@ import axios from 'axios';
 import PokeCard from './components/PokeCard';
 
 function App() {
-    const [pokemons, setPokemons] = useState(0);
-
-    const url = 'https://pokeapi.co/api/v2/pokemon?limit=100&offset=0';
+    const [pokemons, setPokemons] = useState([]);
+    const [offset, setOffset] = useState(0);
+    const [limit, setLimit] = useState(20);
 
     useEffect(() => {
-        fetchPokeData();
+        fetchPokeData(true);
     }, []);
 
-    const fetchPokeData = async () => {
+    const fetchPokeData = async isFirstFetch => {
         try {
+            const offsetValue = isFirstFetch ? 0 : offset + limit;
+            const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offsetValue}`;
             const res = await axios.get(url);
-            setPokemons(res.data.results);
+            setPokemons([...pokemons, ...res.data.results]);
+            setOffset(offsetValue);
         } catch (error) {
             console.log(error);
         }
@@ -35,6 +38,15 @@ function App() {
                     )}
                 </div>
             </section>
+
+            <div className="text-center">
+                <button
+                    onClick={() => fetchPokeData(false)}
+                    className="bg-slate-800 px-6 py-2 my-4 text-base rounded-lg font-bold text-white"
+                >
+                    더보기
+                </button>
+            </div>
         </article>
     );
 }
