@@ -20,7 +20,7 @@ const DetailPage = () => {
     const [pokemon, setPokemon] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         fetchPokemonData();
@@ -32,7 +32,7 @@ const DetailPage = () => {
             const { data: pokemonData } = await axios.get(url);
 
             if (pokemonData) {
-                const { name, id, types, weight, height, stats, abilities } = pokemonData;
+                const { name, id, types, weight, height, stats, abilities, sprites } = pokemonData;
                 const nextAndPreviousPokemon = await getNextAndPreviousPokemon(id);
 
                 const DamageRelations = await Promise.all(
@@ -53,6 +53,7 @@ const DetailPage = () => {
                     stats: formatPokemonStats(stats),
                     DamageRelations,
                     types: types.map(type => type.type.name),
+                    sprites: formatPokemonSprites(sprites),
                 };
                 setPokemon(formattedPokemonData);
                 setIsLoading(false);
@@ -61,6 +62,16 @@ const DetailPage = () => {
             console.log(error);
         }
     }
+
+    const formatPokemonSprites = sprites => {
+        const newSprites = { ...sprites };
+        Object.keys(newSprites).forEach(key => {
+            if (typeof newSprites[key] !== 'string') {
+                delete newSprites[key];
+            }
+        });
+        return Object.values(newSprites);
+    };
 
     const formatPokemonStats = ([statHP, statATK, statDEP, statSATK, statSDEP, statSPD]) => [
         { name: 'HIT Points', baseStat: statHP.base_stat },
@@ -187,6 +198,12 @@ const DetailPage = () => {
                                 })}
                             </tbody>
                         </table>
+                    </div>
+
+                    <div className="flex my-8 flex-wrap justify-center">
+                        {pokemon.sprites.map((url, index) => (
+                            <img key={index} src={url} alt="sprites" />
+                        ))}
                     </div>
 
                     {/* {pokemon.DamageRelations && (
