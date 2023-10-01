@@ -10,6 +10,7 @@ import { Vector } from '../../assets/Vector';
 import Type from '../../components/Type';
 import BaseStat from '../../components/BaseStat';
 import DamageRelations from '../../components/DamageRelations';
+import DamageModal from '../../components/DamageModal';
 
 const DetailPage = () => {
     const params = useParams();
@@ -18,6 +19,8 @@ const DetailPage = () => {
 
     const [pokemon, setPokemon] = useState();
     const [isLoading, setIsLoading] = useState(true);
+
+    const [isModalOpen, setIsModalOpen] = useState(true);
 
     useEffect(() => {
         fetchPokemonData();
@@ -127,7 +130,15 @@ const DetailPage = () => {
                     </div>
 
                     <div className="relative h-auto max-w-[15.5rem] z-20 mt-6 -mb-16">
-                        <img src={img} width="100%" height="auto" loading="lazy" alt={pokemon.name} className={`object-contain h-full`} />
+                        <img
+                            src={img}
+                            width="100%"
+                            height="auto"
+                            loading="lazy"
+                            alt={pokemon.name}
+                            className={`object-contain h-full`}
+                            onClick={() => setIsModalOpen(true)}
+                        />
                     </div>
                 </section>
 
@@ -178,15 +189,16 @@ const DetailPage = () => {
                         </table>
                     </div>
 
-                    {pokemon.DamageRelations && (
+                    {/* {pokemon.DamageRelations && (
                         <div className="w-10/12">
                             <h2 className={`text-base text-center font-semibold ${text}`}>
                                 <DamageRelations damages={pokemon.DamageRelations} />
                             </h2>
                         </div>
-                    )}
+                    )} */}
                 </section>
             </div>
+            {isModalOpen && <DamageModal setIsModalOpen={setIsModalOpen} damages={pokemon.DamageRelations} />}
         </article>
     );
 };
