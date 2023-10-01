@@ -157,7 +157,7 @@ const DetailPage = () => {
                         </div>
                         <div className="w-full ">
                             <h4 className="text-[0.5rem] text-zinc-100">Abilities</h4>
-                            {pokemon.abilities.map((ability, index) => (
+                            {pokemon.abilities.map(ability => (
                                 <div key={ability} className="text-[0.5rem] text-zinc-100 capitalize">
                                     {ability}
                                 </div>
