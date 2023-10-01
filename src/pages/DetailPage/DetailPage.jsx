@@ -9,6 +9,7 @@ import { Balance } from '../../assets/Balance';
 import { Vector } from '../../assets/Vector';
 import Type from '../../components/Type';
 import BaseStat from '../../components/BaseStat';
+import DamageRelations from '../../components/DamageRelations';
 
 const DetailPage = () => {
     const params = useParams();
@@ -179,8 +180,9 @@ const DetailPage = () => {
 
                     {pokemon.DamageRelations && (
                         <div className="w-10/12">
-                            <h2 className={`text-base text-center font-semibold ${text}`}>데미지 관계</h2>
-                            데미지
+                            <h2 className={`text-base text-center font-semibold ${text}`}>
+                                <DamageRelations damages={pokemon.DamageRelations} />
+                            </h2>
                         </div>
                     )}
                 </section>
