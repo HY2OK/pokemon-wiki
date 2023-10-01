@@ -8,6 +8,7 @@ import { ArrowLeft } from '../../assets/ArrowLeft';
 import { Balance } from '../../assets/Balance';
 import { Vector } from '../../assets/Vector';
 import Type from '../../components/Type';
+import BaseStat from '../../components/BaseStat';
 
 const DetailPage = () => {
     const params = useParams();
@@ -51,8 +52,6 @@ const DetailPage = () => {
                 };
                 setPokemon(formattedPokemonData);
                 setIsLoading(false);
-
-                console.log(formattedPokemonData);
             }
         } catch (error) {
             console.log(error);
@@ -60,12 +59,12 @@ const DetailPage = () => {
     }
 
     const formatPokemonStats = ([statHP, statATK, statDEP, statSATK, statSDEP, statSPD]) => [
-        { name: 'HIT Points', baseState: statHP.base_stat },
-        { name: 'Attack', baseState: statATK.base_stat },
-        { name: 'Defense', baseState: statDEP.base_stat },
-        { name: 'Special Attack', baseState: statSATK.base_stat },
-        { name: 'Special Defense', baseState: statSDEP.base_stat },
-        { name: 'Speed', baseState: statSPD.base_stat },
+        { name: 'HIT Points', baseStat: statHP.base_stat },
+        { name: 'Attack', baseStat: statATK.base_stat },
+        { name: 'Defense', baseStat: statDEP.base_stat },
+        { name: 'Special Attack', baseStat: statSATK.base_stat },
+        { name: 'Special Defense', baseStat: statSDEP.base_stat },
+        { name: 'Speed', baseStat: statSPD.base_stat },
     ];
 
     const formatPokemonAbilities = abilities => {
@@ -101,7 +100,6 @@ const DetailPage = () => {
     const bg = `bg-${pokemon?.types?.[0]}`;
     const text = `text-${pokemon?.types?.[0]}`;
 
-    console.log(bg, text);
     return (
         <article className="flex items-center gpa-1 flex-col w-full">
             <div className={`${bg} w-auto h-full flex flex-col z-0 items-center justify-end relative overflow-hidden`}>
@@ -150,14 +148,14 @@ const DetailPage = () => {
                             </div>
                         </div>
                         <div className="w-full ">
-                            <h4 className="text-[0.5rem] text-zinc-100">Weight</h4>
+                            <h4 className="text-[0.5rem] text-zinc-100">Height</h4>
                             <div className="text-sm flex mt-1 gap-2 justify-center text-zinc-200">
                                 <Vector />
                                 {pokemon.height}kg
                             </div>
                         </div>
                         <div className="w-full ">
-                            <h4 className="text-[0.5rem] text-zinc-100">Weight</h4>
+                            <h4 className="text-[0.5rem] text-zinc-100">Abilities</h4>
                             {pokemon.abilities.map((ability, index) => (
                                 <div key={ability} className="text-[0.5rem] text-zinc-100 capitalize">
                                     {ability}
@@ -167,7 +165,17 @@ const DetailPage = () => {
                     </div>
 
                     <h2 className={`text-base font-semibold ${text}`}>기본 능력치</h2>
-                    <div className="w-full">Stat</div>
+                    <div className="w-full">
+                        <table>
+                            <tbody>
+                                {pokemon.stats.map(stat => {
+                                    return (
+                                        <BaseStat key={stat.name} valueStat={stat.baseStat} nameStat={stat.name} type={pokemon.types[0]} />
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
 
                     {pokemon.DamageRelations && (
                         <div className="w-10/12">
