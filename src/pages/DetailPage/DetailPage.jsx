@@ -18,16 +18,17 @@ const DetailPage = () => {
     const baseUrl = `https://pokeapi.co/api/v2/pokemon/`;
 
     const [pokemon, setPokemon] = useState();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        fetchPokemonData();
-    }, []);
+        setIsLoading(true);
+        fetchPokemonData(pokemonId);
+    }, [pokemonId]);
 
-    async function fetchPokemonData() {
-        const url = `${baseUrl}${pokemonId}`;
+    async function fetchPokemonData(id) {
+        const url = `${baseUrl}${id}`;
         try {
             const { data: pokemonData } = await axios.get(url);
 
@@ -119,7 +120,7 @@ const DetailPage = () => {
     if (isLoading) {
         return (
             <div className="absolute h-auto w-auto top-1/3 -translate-x-1/2 left-1/2 z-50">
-                <Loading className="" />
+                <Loading className="w-12 h-12 z-50 animate-spin text-slate-900" />
             </div>
         );
     }
